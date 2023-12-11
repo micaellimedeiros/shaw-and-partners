@@ -1,4 +1,6 @@
-import React, { ChangeEvent, useState, useEffect } from "react";
+import React, { ChangeEvent, useState, useCallback } from "react";
+
+import api from "../services/api";
 
 interface SearchBarProps {
   onSearch: (query: string) => void;
@@ -6,17 +8,30 @@ interface SearchBarProps {
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   };
 
-  useEffect(() => {
-    const debounceTimer = setTimeout(() => {
-      onSearch(searchQuery);
-    }, 300);
+  const fetchSearchResults = useCallback(async () => {
+    if (!searchQuery) return;
 
-    return () => clearTimeout(debounceTimer);
+    try {
+      setError(null);
+      setLoading(true);
+
+      const response = await api.get("/api/users", {
+        params: { q: searchQuery },
+      });
+
+      onSearch(response.data.data);
+    } catch (error: any) {
+      setError(`Error searching. "${error.message}"`);
+    } finally {
+      setLoading(false);
+    }
   }, [searchQuery, onSearch]);
 
   return (
@@ -28,7 +43,15 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
         value={searchQuery}
         onChange={handleChange}
         placeholder="Search..."
+        disabled={loading}
       />
+
+      <button onClick={() => fetchSearchResults()} disabled={loading}>
+        Search
+      </button>
+
+      {loading && <p>Searching...</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 };
