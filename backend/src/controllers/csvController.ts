@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { searchInCsv, processCsvFile } from "../utils/csvUtils";
 
 export const uploadFile = (req: Request, res: Response) => {
+  console.log("req.file", req.file);
   try {
     const file = req.file;
 
@@ -13,7 +14,7 @@ export const uploadFile = (req: Request, res: Response) => {
 
     res.status(200).json({ message: "The file was uploaded successfully." });
   } catch (error) {
-    console.error("Error handling file upload:", error);
+    console.log("Error handling file upload:", error);
     res.status(500).json({ message: "Internal server error." });
   }
 };
@@ -32,7 +33,7 @@ export const searchUsers = (req: Request, res: Response) => {
 
     res.status(200).json({ data: searchData });
   } catch (error) {
-    console.error("Error handling user search:", error);
+    console.log("Error handling user search:", error);
     res.status(500).json({ message: "Internal server error." });
   }
 };
