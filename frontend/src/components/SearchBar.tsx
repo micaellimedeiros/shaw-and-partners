@@ -1,38 +1,18 @@
-import React, { ChangeEvent, useState, useCallback } from "react";
+import { ChangeEvent, useState } from "react";
+import { useAppContext } from "../context/AppContext";
 
-import api from "../services/api";
-
-interface SearchBarProps {
-  onSearch: (query: string) => void;
-}
-
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
+const SearchBar = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+
+  const { loading, search, error } = useAppContext();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   };
 
-  const fetchSearchResults = useCallback(async () => {
-    if (!searchQuery) return;
-
-    try {
-      setError(null);
-      setLoading(true);
-
-      const response = await api.get("/api/users", {
-        params: { q: searchQuery },
-      });
-
-      onSearch(response.data.data);
-    } catch (error: any) {
-      setError(`Error searching. "${error.message}"`);
-    } finally {
-      setLoading(false);
-    }
-  }, [searchQuery, onSearch]);
+  const handleSearch = async () => {
+    await search(searchQuery);
+  };
 
   return (
     <div>
@@ -46,7 +26,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
         disabled={loading}
       />
 
-      <button onClick={() => fetchSearchResults()} disabled={loading}>
+      <button onClick={() => handleSearch()} disabled={loading}>
         Search
       </button>
 

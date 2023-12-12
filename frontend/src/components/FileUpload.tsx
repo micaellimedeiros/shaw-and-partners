@@ -1,31 +1,15 @@
-import React, { ChangeEvent, useState } from "react";
+import { ChangeEvent } from "react";
 
-import api from "../services/api";
+import { useAppContext } from "../context/AppContext";
 
-interface FileUploadProps {
-  onFileUpload: (file: File) => void;
-}
-
-const FileUpload: React.FC<FileUploadProps> = ({ onFileUpload }) => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+const FileUpload = () => {
+  const { loading, uploadFile } = useAppContext();
 
   const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
 
     if (file) {
-      try {
-        setError(null);
-        setLoading(true);
-
-        await api.post("/api/files", file);
-
-        onFileUpload(file);
-      } catch (error: any) {
-        setError(`Error uploading file. "${error.message}"`);
-      } finally {
-        setLoading(false);
-      }
+      await uploadFile(file);
     }
   };
 
@@ -41,7 +25,6 @@ const FileUpload: React.FC<FileUploadProps> = ({ onFileUpload }) => {
       />
 
       {loading && <p>Uploading...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
     </div>
   );
 };

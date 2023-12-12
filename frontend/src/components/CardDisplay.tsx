@@ -1,17 +1,8 @@
-import React from "react";
+import { useAppContext } from "../context/AppContext";
 
-interface Card {
-  name: string;
-  city: string;
-  country: string;
-  favorite_sport: string;
-}
+const CardDisplay = () => {
+  const { cards } = useAppContext();
 
-interface CardDisplayProps {
-  cards: Card[];
-}
-
-const CardDisplay: React.FC<CardDisplayProps> = ({ cards }) => {
   return (
     <div>
       {cards.length > 0 ? (
