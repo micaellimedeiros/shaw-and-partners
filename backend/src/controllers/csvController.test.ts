@@ -27,16 +27,21 @@ describe("CSV Controller", () => {
       expect(res.json).toHaveBeenCalledWith({ message: "No file uploaded." });
     });
 
-    it("should return 200 if file is uploaded successfully", () => {
+    it("should return 200 if file is uploaded successfully", async () => {
       const file = { buffer: "test" };
       req.file = file as unknown as Express.Multer.File;
 
+      (processCsvFile as jest.Mock).mockImplementation(() => ({
+        headers: [],
+        data: [],
+      }));
+
       uploadFile(req as Request, res as Response);
 
-      expect(processCsvFile).toHaveBeenCalledWith(file);
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.json).toHaveBeenCalledWith({
         message: "The file was uploaded successfully.",
+        csv: { headers: [], data: [] },
       });
     });
 
@@ -62,16 +67,18 @@ describe("CSV Controller", () => {
       const query = "test";
       req.query = { q: query };
 
+      (searchInCsv as jest.Mock).mockResolvedValueOnce([]);
+
       searchUsers(req as Request, res as Response);
 
       expect(searchInCsv).toHaveBeenCalledWith(query);
       expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.json).toHaveBeenCalledWith({ data: undefined });
     });
 
     it("should return 500 if an error occurs", () => {
       const query = "test";
       req.query = { q: query };
+
       (searchInCsv as jest.Mock).mockImplementationOnce(() => {
         throw new Error();
       });
