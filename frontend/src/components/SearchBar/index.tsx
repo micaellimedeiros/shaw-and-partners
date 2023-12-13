@@ -1,10 +1,18 @@
 import { ChangeEvent, useState } from "react";
-import { useAppContext } from "../context/AppContext";
+
+import { useAppContext } from "../../context/AppContext";
+
+import {
+  SearchContainer,
+  SearchLabel,
+  SearchInput,
+  SearchButton,
+} from "./styles";
 
 const SearchBar = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const { loading, search, error } = useAppContext();
+  const { loading, search } = useAppContext();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
@@ -15,9 +23,9 @@ const SearchBar = () => {
   };
 
   return (
-    <div>
-      <label htmlFor="search">Filter:</label>
-      <input
+    <SearchContainer>
+      <SearchLabel htmlFor="search">Filter:</SearchLabel>
+      <SearchInput
         type="text"
         id="search"
         value={searchQuery}
@@ -26,13 +34,10 @@ const SearchBar = () => {
         disabled={loading}
       />
 
-      <button onClick={() => handleSearch()} disabled={loading}>
+      <SearchButton onClick={() => handleSearch()} disabled={loading}>
         Search
-      </button>
-
-      {loading && <p>Searching...</p>}
-      {error && <p style={{ color: "red" }}>{error}</p>}
-    </div>
+      </SearchButton>
+    </SearchContainer>
   );
 };
 
