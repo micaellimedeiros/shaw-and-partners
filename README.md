@@ -12,3 +12,5 @@ CSV Dashboard simplifies the process of managing and exploring CSV data. Users c
 - **Search Functionality:** Search through the uploaded data using a search bar.
 - **Responsive Dashboard:** View search results in a visually appealing dashboard.
 - **Styled Components:** Utilizes Styled-Components for a modern and attractive design.
+
+![shaw](https://github.com/micaellimedeiros/shaw-and-partners/assets/54600663/f40dfea6-3544-4ac8-9822-70dded2e8493)
