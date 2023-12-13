@@ -1,10 +1,8 @@
 # CSV Dashboard
 
-CSV Dashboard is a web application that allows users to upload CSV files, search through the data, and view the results in a user-friendly interface.
+<i>CSV Dashboard simplifies the process of managing and exploring CSV data. Users can upload CSV files, search for specific information, and visualize the results in a clean and intuitive dashboard.</i>
 
-## Overview
-
-CSV Dashboard simplifies the process of managing and exploring CSV data. Users can upload CSV files, search for specific information, and visualize the results in a clean and intuitive dashboard.
+![shaw](https://github.com/micaellimedeiros/shaw-and-partners/assets/54600663/f40dfea6-3544-4ac8-9822-70dded2e8493)
 
 ## Features
 
@@ -13,4 +11,4 @@ CSV Dashboard simplifies the process of managing and exploring CSV data. Users c
 - **Responsive Dashboard:** View search results in a visually appealing dashboard.
 - **Styled Components:** Utilizes Styled-Components for a modern and attractive design.
 
-![shaw](https://github.com/micaellimedeiros/shaw-and-partners/assets/54600663/f40dfea6-3544-4ac8-9822-70dded2e8493)
+
