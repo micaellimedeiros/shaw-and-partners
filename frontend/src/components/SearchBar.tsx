@@ -16,13 +16,13 @@ const SearchBar = () => {
 
   return (
     <div>
-      <label htmlFor="search">Search:</label>
+      <label htmlFor="search">Filter:</label>
       <input
         type="text"
         id="search"
         value={searchQuery}
         onChange={handleChange}
-        placeholder="Search..."
+        placeholder="Type to filter..."
         disabled={loading}
       />
 
