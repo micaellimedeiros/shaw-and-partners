@@ -1,4 +1,7 @@
 import React, { createContext, useContext, ReactNode, useState } from "react";
+
+import { toast } from "react-toastify";
+
 import api from "../services/api";
 
 interface AppContextProps {
@@ -14,7 +17,6 @@ export interface Card {
 
 interface AppContextValue {
   loading: boolean;
-  error: string | null;
   cards: Card[];
   uploadFile: (file: File) => Promise<void>;
   search: (query: string) => Promise<void>;
@@ -24,13 +26,11 @@ const AppContext = createContext<AppContextValue | undefined>(undefined);
 
 export const AppProvider: React.FC<AppContextProps> = ({ children }) => {
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [cards, setCards] = useState<Card[]>([]);
 
   const uploadFile = async (file: File) => {
     if (file)
       try {
-        setError(null);
         setLoading(true);
 
         const formData = new FormData();
@@ -40,9 +40,9 @@ export const AppProvider: React.FC<AppContextProps> = ({ children }) => {
 
         setCards(response.data.csv.data);
 
-        // toast.success(response.data.data);
+        toast.success(response.data.message);
       } catch (error: any) {
-        setError(`Error uploading file. "${error.message}"`);
+        toast.error(`Error uploading file. "${error.message}"`);
       } finally {
         setLoading(false);
       }
@@ -50,7 +50,6 @@ export const AppProvider: React.FC<AppContextProps> = ({ children }) => {
 
   const search = async (query: string) => {
     try {
-      setError(null);
       setLoading(true);
 
       const response = await api.get("/api/users", {
@@ -59,7 +58,7 @@ export const AppProvider: React.FC<AppContextProps> = ({ children }) => {
 
       setCards(response.data.data);
     } catch (error: any) {
-      setError(`Error searching. "${error.message}"`);
+      toast.error(`Error searching. "${error.message}"`);
     } finally {
       setLoading(false);
     }
@@ -67,7 +66,6 @@ export const AppProvider: React.FC<AppContextProps> = ({ children }) => {
 
   const contextValue: AppContextValue = {
     loading,
-    error,
     cards,
     uploadFile,
     search,
