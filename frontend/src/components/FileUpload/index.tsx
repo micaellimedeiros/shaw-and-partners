@@ -1,32 +1,44 @@
-import { ChangeEvent } from "react";
-
+import React, { ChangeEvent, useState } from "react";
 import { useAppContext } from "../../context/AppContext";
-import { FileInputLabel } from "./styles";
+import { FileInputLabel, UploadButton } from "./styles";
 
 import { FileUploadContainer, FileInput } from "./styles";
 
 const FileUpload = () => {
   const { loading, uploadFile } = useAppContext();
 
-  const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
 
     if (file) {
-      await uploadFile(file);
+      setSelectedFile(file);
+    }
+  };
+
+  const handleUpload = async () => {
+    if (selectedFile) {
+      await uploadFile(selectedFile);
+
+      setSelectedFile(null);
     }
   };
 
   return (
     <FileUploadContainer>
-      <FileInputLabel htmlFor="fileUpload">Select CSV File:</FileInputLabel>
+      <FileInputLabel htmlFor="fileUpload">File:</FileInputLabel>
       <FileInput
         type="file"
         id="fileUpload"
         accept=".csv"
-        title="Search"
         onChange={handleFileChange}
         disabled={loading}
       />
+
+      <UploadButton onClick={handleUpload} disabled={loading || !selectedFile}>
+        Upload
+      </UploadButton>
     </FileUploadContainer>
   );
 };

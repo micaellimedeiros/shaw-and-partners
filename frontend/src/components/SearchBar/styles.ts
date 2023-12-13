@@ -16,6 +16,12 @@ export const SearchInput = styled.input`
   margin-bottom: 8px;
   border: 0;
   border-radius: 4px 0 0 4px;
+
+  width: 80%;
+
+  @media (max-width: 794px) {
+    width: 60%;
+  }
 `;
 
 export const SearchButton = styled.button`
