@@ -18,4 +18,8 @@ export const FileInput = styled.input`
 
   border: 1px solid #ccc;
   border-radius: 4px;
+
+  @media (max-width: 600px) {
+    width: auto;
+  }
 `;
